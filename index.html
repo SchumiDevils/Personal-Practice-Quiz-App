@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberEss Practice Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════════ -->
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="#" onclick="initHome();return false">
+        <div class="logo-icon">🛡</div>
+        <span class="logo-text">CyberEss&nbsp;Quiz</span>
+      </a>
+
+      <!-- Filters (visible in non-home modes) -->
+      <div class="toolbar-left" id="header-filters" style="display:none">
+        <button class="filter-btn active" data-filter="all">All&nbsp;<span style="opacity:.5">(244)</span></button>
+        <button class="filter-btn" data-filter="mcq">Single</button>
+        <button class="filter-btn" data-filter="multi">Multi</button>
+        <button class="filter-btn" data-filter="match">Match</button>
+        <button class="filter-btn" data-filter="starred">★ Starred</button>
+        <button class="filter-btn" data-filter="missed">⚑ Missed</button>
+      </div>
+
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-mode="home">🏠 Home</button>
+        <button class="nav-tab" data-mode="quiz">⚡ Quiz</button>
+        <button class="nav-tab" data-mode="flash">🃏 Flashcards</button>
+        <button class="nav-tab" data-mode="study">📖 Study</button>
+      </div>
+
+      <div class="header-stats">
+        <div class="stat-chip" id="stat-score"><span>0</span> pts</div>
+        <div class="stat-chip" id="stat-total"><span>0</span> ★</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN
+  ═══════════════════════════════════════════════════════════ -->
+  <main>
+
+    <!-- ── HOME ─────────────────────────────────────────────── -->
+    <section id="screen-home" class="screen">
+      <div class="home-screen-inner">
+        <div class="home-hero">
+          <h1>Cybersecurity Essentials<br>Practice Quiz</h1>
+          <p>244 exam-accurate questions with explanations. Practice until you ace it.</p>
+        </div>
+
+        <!-- Stats row -->
+        <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+          <div class="stat-chip" style="font-size:13px;padding:6px 18px">
+            📋 <span style="color:var(--text)">244</span> Questions
+          </div>
+          <div class="stat-chip" style="font-size:13px;padding:6px 18px">
+            🎯 <span style="color:var(--accent)">194</span> Single-Answer
+          </div>
+          <div class="stat-chip" style="font-size:13px;padding:6px 18px">
+            📦 <span style="color:var(--accent3)">36</span> Multi-Answer
+          </div>
+          <div class="stat-chip" style="font-size:13px;padding:6px 18px">
+            🔗 <span style="color:var(--warning)">14</span> Match
+          </div>
+        </div>
+
+        <div class="home-cards">
+          <div class="mode-card" data-mode="quiz">
+            <div class="mode-card-icon quiz">⚡</div>
+            <h2>Quiz Mode</h2>
+            <p>Answer random multiple-choice questions. Get instant feedback and track your score.</p>
+            <div class="card-meta">Keyboard shortcuts supported</div>
+          </div>
+
+          <div class="mode-card" data-mode="flash">
+            <div class="mode-card-icon flash">🃏</div>
+            <h2>Flashcards</h2>
+            <p>Flip cards to reveal answers. Self-mark and focus on the ones you keep missing.</p>
+            <div class="card-meta">Space to flip · ← miss · → got it</div>
+          </div>
+
+          <div class="mode-card" data-mode="study">
+            <div class="mode-card-icon study">📖</div>
+            <h2>Study Mode</h2>
+            <p>Browse all questions with answers and explanations visible. Great for review.</p>
+            <div class="card-meta">All 244 questions listed</div>
+          </div>
+        </div>
+
+        <!-- Filter chips on home too -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <span style="font-size:13px;color:var(--text-dim);margin-right:4px;align-self:center">Filter:</span>
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="mcq">Single-answer</button>
+          <button class="filter-btn" data-filter="multi">Multi-answer</button>
+          <button class="filter-btn" data-filter="match">Match</button>
+          <button class="filter-btn" data-filter="starred">★ Starred</button>
+          <button class="filter-btn" data-filter="missed">⚑ Missed</button>
+        </div>
+
+        <p style="font-size:12px;color:var(--text-dim);font-family:var(--mono)">
+          Your bookmarks and missed questions are saved in your browser.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ──────────────────────────────────────────────── -->
+    <section id="screen-quiz" class="screen" style="display:none">
+      <div id="quiz-body"></div>
+    </section>
+
+    <!-- ── FLASHCARD ─────────────────────────────────────────── -->
+    <section id="screen-flash" class="screen" style="display:none">
+      <div id="flash-body"></div>
+    </section>
+
+    <!-- ── STUDY ─────────────────────────────────────────────── -->
+    <section id="screen-study" class="screen" style="display:none">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <input
+            type="search"
+            id="study-search"
+            placeholder="Search questions…"
+            style="
+              background:var(--surface2);
+              border:1px solid var(--border);
+              border-radius:8px;
+              padding:7px 14px;
+              color:var(--text);
+              font-size:13px;
+              font-family:var(--sans);
+              width:260px;
+              outline:none;
+            "
+          />
+        </div>
+      </div>
+      <div id="study-body"></div>
+    </section>
+
+    <!-- ── SUMMARY ───────────────────────────────────────────── -->
+    <section id="screen-summary" class="screen" style="display:none">
+      <div id="summary-body"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+<script>
+  // Study search
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('study-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        const term = searchInput.value.toLowerCase();
+        document.querySelectorAll('.study-item').forEach(item => {
+          const text = item.textContent.toLowerCase();
+          item.style.display = text.includes(term) ? '' : 'none';
+        });
+      });
+    }
+  });
+</script>
+</body>
+</html>
