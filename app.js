@@ -248,27 +248,61 @@ function renderOptions(card, q) {
 }
 
 function renderMatchQuestion(card, q) {
-  const table = el('table', 'match-table');
-  table.innerHTML = `<thead><tr>
-    <th>Step / Item</th>
-    <th>Description</th>
-  </tr></thead>`;
-  const tbody = document.createElement('tbody');
-  (q.matchPairs || []).forEach(([a, b]) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${a}</td><td>${b}</td>`;
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-  card.appendChild(table);
+  const pairs = q.matchPairs || [];
+  if (!pairs.length) return;
 
-  if (q.explanation) {
-    const expl = el('div', 'explanation-box', `<strong>Answer / Explanation</strong>${q.explanation}`);
-    card.appendChild(expl);
-  }
+  // Shuffle the right-column values for the dropdowns
+  const rightValues = shuffle(pairs.map(([, b]) => b));
+
+  const hint = el('div', 'multi-hint', `🔗 Match each item on the left to the correct option`);
+  card.appendChild(hint);
+
+  const table = el('table', 'match-interactive-table');
+  table.id = 'match-table-' + q.id;
+
+  pairs.forEach(([leftItem, correctRight], rowIdx) => {
+    const tr = document.createElement('tr');
+    tr.className = 'match-row';
+    tr.dataset.correct = correctRight;
+
+    const tdLeft = document.createElement('td');
+    tdLeft.className = 'match-left-cell';
+    tdLeft.textContent = leftItem;
+
+    const tdRight = document.createElement('td');
+    tdRight.className = 'match-right-cell';
+
+    const select = document.createElement('select');
+    select.className = 'match-select';
+    select.dataset.rowIdx = rowIdx;
+    select.innerHTML = `<option value="">— select —</option>` +
+      rightValues.map(v => `<option value="${v}">${v}</option>`).join('');
+
+    select.addEventListener('change', () => {
+      // Prevent duplicate selections across rows
+      const allSelects = table.querySelectorAll('.match-select');
+      const chosen = select.value;
+      // Enable submit when every row has a selection
+      const allFilled = [...allSelects].every(s => s.value !== '');
+      const submitBtn = document.getElementById('quiz-submit');
+      if (submitBtn) submitBtn.disabled = !allFilled;
+    });
+
+    tdRight.appendChild(select);
+    tr.appendChild(tdLeft);
+    tr.appendChild(tdRight);
+    table.appendChild(tr);
+  });
+
+  card.appendChild(table);
 }
 
 function checkAnswer(q, card, submitBtn, nextBtn) {
+  if (q.type === 'match') {
+    checkMatchAnswer(q, card, submitBtn, nextBtn);
+    return;
+  }
+
   State.quiz.answered = true;
   submitBtn.disabled = true;
   submitBtn.textContent = '✓ Submitted';
@@ -325,6 +359,67 @@ function checkAnswer(q, card, submitBtn, nextBtn) {
 
   // Save history
   State.quiz.history.push({ id: q.id, q: q.question, correct, selected, isCorrect });
+  updateHeaderStats();
+}
+
+function checkMatchAnswer(q, card, submitBtn, nextBtn) {
+  State.quiz.answered = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = '✓ Submitted';
+
+  const rows = card.querySelectorAll('.match-row');
+  let correctCount = 0;
+
+  rows.forEach(row => {
+    const correctRight = row.dataset.correct;
+    const select = row.querySelector('.match-select');
+    const chosen = select ? select.value : '';
+    const isRowCorrect = chosen === correctRight;
+
+    if (isRowCorrect) correctCount++;
+
+    // Style each row
+    row.classList.add(isRowCorrect ? 'match-row-correct' : 'match-row-wrong');
+
+    if (select) {
+      select.disabled = true;
+    }
+
+    // Always show the correct answer label
+    const feedback = document.createElement('div');
+    feedback.className = 'match-row-feedback';
+    if (isRowCorrect) {
+      feedback.innerHTML = `<span class="match-fb-correct">✓ Correct</span>`;
+    } else {
+      feedback.innerHTML = `<span class="match-fb-wrong">✗ ${chosen || '(skipped)'}</span>
+        <span class="match-fb-answer">→ ${correctRight}</span>`;
+    }
+    row.querySelector('.match-right-cell').appendChild(feedback);
+  });
+
+  const allCorrect = correctCount === rows.length;
+
+  if (allCorrect) {
+    State.quiz.score++;
+    State.missed.delete(q.id);
+  } else {
+    State.quiz.wrong++;
+    State.missed.add(q.id);
+  }
+  persist();
+
+  const banner = el('div', 'explanation-box', '');
+  banner.innerHTML = allCorrect
+    ? `<strong style="color:var(--success)">✓ All ${rows.length} matches correct!</strong>${q.explanation || ''}`
+    : `<strong style="color:var(--danger)">✗ ${correctCount}/${rows.length} correct</strong>${q.explanation || ''}`;
+  card.insertBefore(banner, card.querySelector('.action-bar'));
+
+  nextBtn.textContent = 'Next Question →';
+  nextBtn.classList.remove('btn-secondary');
+  nextBtn.classList.add('btn-primary');
+  nextBtn.onclick = () => { State.quiz.current++; renderQuizQuestion(); };
+
+  State.quiz.history.push({ id: q.id, q: q.question, correct: [], selected: [], isCorrect: allCorrect });
   updateHeaderStats();
 }
 
@@ -517,13 +612,13 @@ function renderStudy(pool) {
 
     const body = el('div', 'study-item-body');
 
-    if (q.type === 'match' && q.matchPairs) {
+    if (q.type === 'match' && q.matchPairs && q.matchPairs.length) {
       const table = el('table', 'match-table');
-      table.innerHTML = `<thead><tr><th>Item</th><th>Match</th></tr></thead>`;
+      table.innerHTML = `<thead><tr><th>Item</th><th>Correct Match</th></tr></thead>`;
       const tbody = document.createElement('tbody');
       q.matchPairs.forEach(([a,b]) => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${a}</td><td>${b}</td>`;
+        tr.innerHTML = `<td>${a}</td><td style="color:var(--success);font-weight:600">${b}</td>`;
         tbody.appendChild(tr);
       });
       table.appendChild(tbody);
