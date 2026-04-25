@@ -2014,13 +2014,29 @@ const QUESTIONS = [
     "id": 117,
     "question": "Match the commonly used ports on a Linux server with the corresponding service:",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
     "explanation": "",
     "topic": "8.3.2",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "HTTPS",
+        "443"
+      ],
+      [
+        "SMTP",
+        "25"
+      ],
+      [
+        "Telnet",
+        "23"
+      ],
+      [
+        "DNS",
+        "53"
+      ]
+    ]
   },
   {
     "id": 118,
@@ -2230,13 +2246,29 @@ const QUESTIONS = [
     "id": 130,
     "question": "Match the security policy with the description:",
     "options": [],
-    "correct": [
-      2
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| specifies network device operating systems and end user application update procedures                       | Network maintenance policy               | | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------- | | identifies how remote users can access a network and what is accessible via remote connectivity             | Remote access policy                     | | identifies network applications and uses that are acceptable to the organization                            | Acceptable use policy (AUP)              | | specifies authorized persons that can have access to network resources and identity verification procedures | Identification and authentication policy |",
+    "explanation": "",
     "topic": "11.3.2",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "specifies network device operating systems and end user application update procedures",
+        "Network maintenance policy"
+      ],
+      [
+        "identifies how remote users can access a network and what is accessible via remote connectivity",
+        "Remote access policy"
+      ],
+      [
+        "identifies network applications and uses that are acceptable to the organization",
+        "Acceptable use policy (AUP)"
+      ],
+      [
+        "specifies authorized persons that can have access to network resources and identity verification procedures",
+        "Identification and authentication policy"
+      ]
+    ]
   },
   {
     "id": 131,
@@ -2363,13 +2395,29 @@ const QUESTIONS = [
     "id": 138,
     "question": "Match the stages in the risk management process to the description:",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| Once a risk has been identified, it is assessed and analyzed to determine the severity that the threat poses | Assess the risk     | | ------------------------------------------------------------------------------------------------------------ | ------------------- | | Continuously review risk reductions due to elimination, mitigation, and transfer actions                     | Monitor the risk    | | Identify the threats throughout the organization that increase risk                                          | Frame the risk      | | Develop an action plan to reduce overall risk exposure                                                       | Respond to the risk |",
+    "explanation": "",
     "topic": "26.1.4",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "Once a risk has been identified, it is assessed and analyzed to determine the severity that the threat poses",
+        "Assess the risk"
+      ],
+      [
+        "Continuously review risk reductions due to elimination, mitigation, and transfer actions",
+        "Monitor the risk"
+      ],
+      [
+        "Identify the threats throughout the organization that increase risk",
+        "Frame the risk"
+      ],
+      [
+        "Develop an action plan to reduce overall risk exposure",
+        "Respond to the risk"
+      ]
+    ]
   },
   {
     "id": 139,
@@ -2409,9 +2457,7 @@ const QUESTIONS = [
     "id": 141,
     "question": "Match the threat intelligence service with the description.",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
     "explanation": "",
     "topic": "24.2",
@@ -2895,25 +2941,61 @@ const QUESTIONS = [
     "id": 169,
     "question": "Match the security service with the description.",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| Allows administrators to manage network devices                                        | SNMP           | | -------------------------------------------------------------------------------------- | -------------- | | A series of commands that control whether a device forwards or drops packets           | ACL            | | Allows a switch to make duplicate copies of traffic that is sent to a traffic analyzer | Port mirroring | | Provides statistics on packets flowing through a Cisco router or multilayer switch     | NetFlow        |",
+    "explanation": "",
     "topic": "6.2",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "Allows administrators to manage network devices",
+        "SNMP"
+      ],
+      [
+        "A series of commands that control whether a device forwards or drops packets",
+        "ACL"
+      ],
+      [
+        "Allows a switch to make duplicate copies of traffic that is sent to a traffic analyzer",
+        "Port mirroring"
+      ],
+      [
+        "Provides statistics on packets flowing through a Cisco router or multilayer switch",
+        "NetFlow"
+      ]
+    ]
   },
   {
     "id": 170,
     "question": "Match the security incident stakeholder with the role.",
     "options": [],
-    "correct": [
-      2
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| performs disciplinary measures                             | human resources       | | ---------------------------------------------------------- | --------------------- | | changes firewall rules                                     | information assurance | | preserves attack evidence                                  | IT support            | | reviews policies for local or federal guideline violations | legal department      | | designs the budget                                         | management            |",
+    "explanation": "",
     "topic": "27.4.3",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "performs disciplinary measures",
+        "human resources"
+      ],
+      [
+        "changes firewall rules",
+        "information assurance"
+      ],
+      [
+        "preserves attack evidence",
+        "IT support"
+      ],
+      [
+        "reviews policies for local or federal guideline violations",
+        "legal department"
+      ],
+      [
+        "designs the budget",
+        "management"
+      ]
+    ]
   },
   {
     "id": 171,
@@ -3007,9 +3089,27 @@ const QUESTIONS = [
     "options": [],
     "correct": [],
     "multiple": false,
-    "explanation": "| Step 1 | Host A sends FIN to Server B | | ------ | ---------------------------- | | Step 2 | Server B sends ACK to Host A | | Step 3 | Server B sends FIN to Host A | | Step 4 | Host A sends ACK to Server B |",
+    "explanation": "",
     "topic": "3.3.3",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "Step 1",
+        "Host A sends FIN to Server B"
+      ],
+      [
+        "Step 2",
+        "Server B sends ACK to Host A"
+      ],
+      [
+        "Step 3",
+        "Server B sends FIN to Host A"
+      ],
+      [
+        "Step 4",
+        "Host A sends ACK to Server B"
+      ]
+    ]
   },
   {
     "id": 177,
@@ -3017,9 +3117,27 @@ const QUESTIONS = [
     "options": [],
     "correct": [],
     "multiple": false,
-    "explanation": "| Allows for a process to have its affinity set                                        | Details     | | ------------------------------------------------------------------------------------ | ----------- | | Displays resource utilization information for CPU, memory, network, disk, and others | Performance | | Allows programs that are running on system startup to be disabled                    | Startup     | | Allows for a start, stop or restart of a particular service                          | Services    |",
+    "explanation": "",
     "topic": "7.3.6",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "Allows for a process to have its affinity set",
+        "Details"
+      ],
+      [
+        "Displays resource utilization information for CPU, memory, network, disk, and others",
+        "Performance"
+      ],
+      [
+        "Allows programs that are running on system startup to be disabled",
+        "Startup"
+      ],
+      [
+        "Allows for a start, stop or restart of a particular service",
+        "Services"
+      ]
+    ]
   },
   {
     "id": 178,
@@ -3132,13 +3250,25 @@ const QUESTIONS = [
     "id": 184,
     "question": "A company is preparing for an ISMS audit. Match the right control for each control objective.",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| A clean desk policy will be implemented                                                       | to prevent loss, damage, theft or compromise of sensitive data                                    | | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | | Employees will be required to report any observed or suspected information security weakness  | to ensure a consistent and effective approach to the management of information security incidents | | Rules regarding the installation of software by employees will be established and implemented | to prevent exploitation of software vulnerabilities                                               |",
+    "explanation": "",
     "topic": "22.3.4",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "A clean desk policy will be implemented",
+        "to prevent loss, damage, theft or compromise of sensitive data"
+      ],
+      [
+        "Employees will be required to report any observed or suspected information security weakness",
+        "to ensure a consistent and effective approach to the management of information security incidents"
+      ],
+      [
+        "Rules regarding the installation of software by employees will be established and implemented",
+        "to prevent exploitation of software vulnerabilities"
+      ]
+    ]
   },
   {
     "id": 185,
@@ -3365,13 +3495,29 @@ const QUESTIONS = [
     "id": 199,
     "question": "Match the network service with the description.",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| syslog  | notifies the administrator with detailed system messages          | | ------- | ----------------------------------------------------------------- | | SNMP    | allows administrators to manage network nodes                     | | NTP     | synchronizes the time across all devices on the network           | | NetFlow | provides statistics on IP packets flowing through network devices |",
+    "explanation": "",
     "topic": "6.2.11",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "syslog",
+        "notifies the administrator with detailed system messages"
+      ],
+      [
+        "SNMP",
+        "allows administrators to manage network nodes"
+      ],
+      [
+        "NTP",
+        "synchronizes the time across all devices on the network"
+      ],
+      [
+        "NetFlow",
+        "provides statistics on IP packets flowing through network devices"
+      ]
+    ]
   },
   {
     "id": 200,
@@ -3483,9 +3629,31 @@ const QUESTIONS = [
     "options": [],
     "correct": [],
     "multiple": false,
-    "explanation": "| Step 1 | The website is compromised             | | ------ | -------------------------------------- | | Step 2 | HTTP 302 cushioning is used            | | Step 3 | Domain shadowing is used               | | Step 4 | An exploit kit landing page is created | | Step 5 | Malware is spread through its payload  |",
+    "explanation": "",
     "topic": "4.2.2",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "Step 1",
+        "The website is compromised"
+      ],
+      [
+        "Step 2",
+        "HTTP 302 cushioning is used"
+      ],
+      [
+        "Step 3",
+        "Domain shadowing is used"
+      ],
+      [
+        "Step 4",
+        "An exploit kit landing page is created"
+      ],
+      [
+        "Step 5",
+        "Malware is spread through its payload"
+      ]
+    ]
   },
   {
     "id": 207,
@@ -3703,9 +3871,7 @@ const QUESTIONS = [
     "id": 219,
     "question": "Match the IT security governance role with its description.",
     "options": [],
-    "correct": [
-      0
-    ],
+    "correct": [],
     "multiple": false,
     "explanation": "",
     "topic": "22.1.2",
@@ -3811,13 +3977,29 @@ const QUESTIONS = [
     "id": 224,
     "question": "Match the security concept to the description.",
     "options": [],
-    "correct": [
-      1
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "| a weakness in a system                      | vulnerability | | ------------------------------------------- | ------------- | | a potential danger to an asset              | threat        | | the likelihood of undesireable consequences | risk          | | a mechanism used to compromise an asset     | exploit       |",
+    "explanation": "",
     "topic": "2.2.1",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "a weakness in a system",
+        "vulnerability"
+      ],
+      [
+        "a potential danger to an asset",
+        "threat"
+      ],
+      [
+        "the likelihood of undesireable consequences",
+        "risk"
+      ],
+      [
+        "a mechanism used to compromise an asset",
+        "exploit"
+      ]
+    ]
   },
   {
     "id": 225,
@@ -4080,13 +4262,33 @@ const QUESTIONS = [
     "id": 240,
     "question": "Match the command line tool with its function.",
     "options": [],
-    "correct": [
-      0
-    ],
+    "correct": [],
     "multiple": false,
-    "explanation": "Place the options in the following order: | used to assemble and analyze packets, and is used for port scanning, path discovery, OS fingerprinting, and firewall testing.                          | hping    | | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | | used to gather information from TCP and UDP network connections and can also be used for port scanning, monitoring, banner grabbing, and file copying. | netcat   | | used in security auditing. It locates network hosts, detects operating systems, and identifies services.                                               | nmap     | | used for help troubleshooting NetBIOS name resolution problems in a Windows system.                                                                    | nbtstat  | | used in Mac/Linux operating systems to display TCP/IP settings (IP address, subnet mask, default gateway, DNS, and MAC information.                    | ifconfig |",
+    "explanation": "Place the options in the following order:",
     "topic": "",
-    "type": "match"
+    "type": "match",
+    "matchPairs": [
+      [
+        "used to assemble and analyze packets, and is used for port scanning, path discovery, OS fingerprinting, and firewall testing.",
+        "hping"
+      ],
+      [
+        "used to gather information from TCP and UDP network connections and can also be used for port scanning, monitoring, banner grabbing, and file copying.",
+        "netcat"
+      ],
+      [
+        "used in security auditing. It locates network hosts, detects operating systems, and identifies services.",
+        "nmap"
+      ],
+      [
+        "used for help troubleshooting NetBIOS name resolution problems in a Windows system.",
+        "nbtstat"
+      ],
+      [
+        "used in Mac/Linux operating systems to display TCP/IP settings (IP address, subnet mask, default gateway, DNS, and MAC information.",
+        "ifconfig"
+      ]
+    ]
   },
   {
     "id": 241,

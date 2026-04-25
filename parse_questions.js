@@ -105,7 +105,7 @@ const MANUAL_ANSWERS = {
   114:[1],      // SOAR → automated response
   115:[2],      // steganography → hide data in media
   116:[0],      // covert channel → unauthorized communication
-  117:[1],      // timing attack → measure execution time
+  // 117 is a match question — no correct[] override needed
   118:[0],      // SYN flood → half-open TCP connections
   119:[2],      // UDP flood → overwhelm with UDP packets
   120:[3],      // man-in-the-middle → intercept and relay
@@ -118,7 +118,7 @@ const MANUAL_ANSWERS = {
   127:[1],      // false positive → alert with no real incident
   128:[2],      // true negative → no incident, no alert
   129:[0],      // false negative → missed real incident
-  130:[2],      // ACL → filter traffic based on rules
+  // 130 is a match question — handled by matchPairs, no correct[] needed
   131:[1],      // implicit deny → default block at ACL end
   132:[0],      // stateless firewall → packet by packet
   133:[1],      // Kerberos → ticket-based authentication
@@ -126,10 +126,10 @@ const MANUAL_ANSWERS = {
   135:[0],      // OAuth → authorization framework
   136:[0],      // MD5 → 128-bit hash output
   137:[2],      // SHA-256 → 256-bit hash
-  138:[1],      // HMAC → integrity with shared secret
+  // 138 is a match question — no correct[] override needed
   139:[2],      // PKI → certificate management framework
   140:[0],      // CRL → revoked certificates list
-  141:[1],      // OCSP → real-time cert status
+  // 141 is a match question — no correct[] override needed
   142:[1],      // IPS → block attacks inline
   143:[2],      // WAF → protect web applications
   144:[0],      // DDoS mitigation → absorb/deflect traffic
@@ -157,8 +157,8 @@ const MANUAL_ANSWERS = {
   166:[2],      // patch management → fix known vulnerabilities
   167:[0],      // configuration management → track changes
   168:[1],      // change management → control modifications
-  169:[1],      // risk assessment → identify and evaluate risks
-  170:[2],      // BIA → impact of disruption
+  // 169 is a match question — no correct[] override needed
+  // 170 is a match question — no correct[] override needed
   171:[0],      // RTO → recovery time objective
   172:[0],      // business continuity → maintain operations
   173:[2],      // DRP → recover IT after disaster
@@ -169,7 +169,7 @@ const MANUAL_ANSWERS = {
   181:[1],      // attack vector → path to gain access
   182:[0],      // reconnaissance → information gathering
   183:[2],      // weaponization → create exploit
-  184:[1],      // delivery → transmit weapon to target
+  // 184 is a match question — no correct[] override needed
   185:[0],      // exploitation → trigger code
   186:[2],      // installation → establish persistence
   187:[1],      // C2 → establish remote control
@@ -184,7 +184,7 @@ const MANUAL_ANSWERS = {
   196:[1],      // insider threat → trusted person
   197:[0],      // script kiddie → low-skill uses existing tools
   198:[2],      // gray hat → reports after unauthorized access
-  199:[1],      // white hat → authorized security testing
+  // 199 is a match question — no correct[] override needed
   200:[0],      // black hat → malicious unauthorized access
   201:[2],      // supply chain attack → compromise vendor
   202:[1],      // weaponization → obtain automated tool
@@ -202,12 +202,12 @@ const MANUAL_ANSWERS = {
   216:[0],      // credential access → steal passwords
   217:[2],      // discovery → enumerate environment
   218:[1],      // execution → run attacker code
-  219:[0],      // initial access → first entry
+  // 219 is a match question — no correct[] override needed
   220:[2],      // privilege escalation → gain higher permissions
   221:[1],      // collection → gather data before exfil
   222:[0],      // impact → disrupt/destroy/encrypt data
   223:[2],      // ransomware → encrypt and demand payment
-  224:[1],      // wiper → destroy data permanently
+  // 224 is a match question — no correct[] override needed
   225:[0],      // cryptojacking → mine crypto with victim resources
   226:[2],      // botnet → collection of compromised machines
   227:[1],      // C2 server → coordinates botnet
@@ -223,7 +223,7 @@ const MANUAL_ANSWERS = {
   237:[0],      // adware → displays unwanted ads
   238:[2],      // spyware → monitors user activity
   239:[1],      // rogue security software → fake antivirus
-  240:[0],      // PUP → unwanted software
+  // 240 is a match question — no correct[] override needed
   241:[2],      // RAT → remote access trojan
   242:[1],      // downloader → fetches additional malware
   243:[0],      // dropper → installs malware
@@ -255,6 +255,16 @@ const MANUAL_ANSWERS = {
   73: [2],      // most comprehensive availability approach → layering
   74: [1],      // ICMP utility → ping
   246:[1],      // class-default drop in ZPF → drops all non-matching traffic
+};
+
+// Match questions whose pairs aren't in standard pipe-table format
+const MATCH_PAIRS_OVERRIDE = {
+  117: [
+    ['HTTPS', '443'],
+    ['SMTP',  '25'],
+    ['Telnet','23'],
+    ['DNS',   '53'],
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -393,7 +403,17 @@ function parseFile(filepath) {
           const nl = lines[i].trim();
           if (Q_RE.test(nl)) break;
           if (nl.startsWith('**') && !nl.startsWith('**Explanation')) break;
-          if (nl) parts.push(nl);
+          // If line is a table row, route it into matchPairs for match-type questions
+          const tm2 = TABLE_ROW_RE.exec(nl);
+          if (tm2) {
+            const c1 = tm2[1].trim(), c2 = tm2[2].trim();
+            if (!/-{3,}/.test(c1) && c1 && c2) {
+              // This is a real data row — treat as match pair
+              if (current.type === 'match') current.matchPairs.push([c1, c2]);
+            }
+          } else if (nl) {
+            parts.push(nl);
+          }
           i++;
         }
         current.explanation = parts.filter(Boolean).join(' ').trim();
@@ -426,6 +446,8 @@ function main() {
       correct = auto;
     }
 
+    const pairs = MATCH_PAIRS_OVERRIDE[q.id] || q.matchPairs;
+
     const obj = {
       id: q.id,
       question: q.question,
@@ -436,7 +458,7 @@ function main() {
       topic: q.topic,
       type: q.type,
     };
-    if (q.type === 'match' && q.matchPairs.length) obj.matchPairs = q.matchPairs;
+    if (q.type === 'match' && pairs.length) obj.matchPairs = pairs;
     return obj;
   });
 

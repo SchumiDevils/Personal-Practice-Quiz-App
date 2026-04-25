@@ -366,12 +366,16 @@ function renderFlashCard() {
     </div>`;
   main.appendChild(progressWrap);
 
-  // Correct answer text
+  // Correct answer text for flashcard back
   let answerText = '';
-  if (q.type === 'match' && q.matchPairs) {
-    answerText = q.matchPairs.map(([a,b]) => `${a} → ${b}`).join('<br>');
+  if (q.type === 'match' && q.matchPairs && q.matchPairs.length) {
+    answerText = `<table style="width:100%;border-collapse:collapse;font-size:14px">` +
+      q.matchPairs.map(([a,b]) => `<tr>
+        <td style="padding:5px 10px 5px 0;color:var(--accent2);font-family:var(--mono);font-size:13px;font-weight:600;width:50%;vertical-align:top">${a}</td>
+        <td style="padding:5px 0;color:var(--text);vertical-align:top">${b}</td>
+      </tr>`).join('') + `</table>`;
   } else if (q.correct && q.correct.length) {
-    answerText = q.correct.map(i => q.options[i]).filter(Boolean).join('<br>');
+    answerText = q.correct.map(i => `<div style="padding:4px 0;color:var(--success)">${q.options[i]}</div>`).join('');
   } else {
     answerText = q.explanation;
   }
@@ -399,8 +403,8 @@ function renderFlashCard() {
   controls.id = 'flash-controls';
   controls.style.display = 'none';
   controls.innerHTML = `
-    <button class="btn-wrong"  id="fc-wrong" >✗ Didn't know <span class="kbd">←</span></button>
-    <button class="btn-correct" id="fc-correct">✓ Got it <span class="kbd">→</span></button>`;
+    <button class="btn-wrong"  id="fc-wrong" ><span class="kbd">\u2190</span> Didn't know</button>
+    <button class="btn-correct" id="fc-correct">Got it <span class="kbd">\u2192</span></button>`;
   main.appendChild(controls);
 
   controls.querySelector('#fc-wrong').addEventListener('click',  () => markFlash(false));
@@ -421,8 +425,8 @@ function renderFlashCard() {
 
   const kbdHint = el('div', 'kbd-hints', `
     <span>Flip <span class="kbd">Space</span></span>
-    <span>Got it <span class="kbd">→</span></span>
-    <span>Missed <span class="kbd">←</span></span>
+    <span>Got it <span class="kbd">\u2192</span></span>
+    <span>Missed <span class="kbd">\u2190</span></span>
   `);
   main.appendChild(kbdHint);
 }
