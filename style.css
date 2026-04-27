@@ -1,6 +1,6 @@
 /* ============================================================
    Cybersecurity Essentials — Practice Quiz
-   Dark terminal-style theme
+   Dark terminal-style theme + Light theme
    ============================================================ */
 
 :root {
@@ -20,6 +20,27 @@
   --text-dim:  #64748b;
   --mono:      'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   --sans:      'Inter', 'Segoe UI', system-ui, sans-serif;
+  --header-bg: rgba(10, 15, 30, 0.95);
+  --btn-primary-text: #0a0f1e;
+}
+
+[data-theme="light"] {
+  --bg:        #f0f4f8;
+  --surface:   #ffffff;
+  --surface2:  #f1f5f9;
+  --surface3:  #e2e8f0;
+  --border:    #cbd5e1;
+  --accent:    #0097a7;
+  --accent2:   #0284c7;
+  --accent3:   #6366f1;
+  --danger:    #e11d48;
+  --warning:   #ea580c;
+  --success:   #16a34a;
+  --text:      #0f172a;
+  --text-muted:#475569;
+  --text-dim:  #94a3b8;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --btn-primary-text: #ffffff;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,7 +68,7 @@ body {
 
 /* ── Header / Nav ── */
 header {
-  background: rgba(10, 15, 30, 0.95);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
   position: sticky;
@@ -118,7 +139,7 @@ header {
 .nav-tab:hover { background: var(--surface3); color: var(--text); }
 .nav-tab.active {
   background: var(--accent);
-  color: #0a0f1e;
+  color: var(--btn-primary-text);
   font-weight: 600;
 }
 
@@ -126,6 +147,29 @@ header {
   display: flex;
   gap: 12px;
   margin-left: 16px;
+  align-items: center;
+}
+
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--surface3);
 }
 
 .stat-chip {
@@ -203,7 +247,7 @@ main {
 .mode-card:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 212, 170, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 150, 136, 0.15);
 }
 
 .mode-card-icon {
@@ -626,10 +670,10 @@ main {
 
 .btn-primary {
   background: var(--accent);
-  color: #0a0f1e;
+  color: var(--btn-primary-text);
 }
 
-.btn-primary:hover { background: #00b894; transform: translateY(-1px); }
+.btn-primary:hover { filter: brightness(0.9); transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
 .btn-secondary {

@@ -760,6 +760,29 @@ document.addEventListener('keydown', e => {
 });
 
 // ---------------------------------------------------------------------------
+// Theme toggle
+// ---------------------------------------------------------------------------
+function initTheme() {
+  const saved = localStorage.getItem('cyb_theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const useDark = saved ? saved === 'dark' : prefersDark;
+  applyTheme(useDark ? 'dark' : 'light', false);
+}
+
+function applyTheme(theme, save = true) {
+  const isDark = theme === 'dark';
+  document.documentElement.dataset.theme = isDark ? '' : 'light';
+  const btn = $('theme-toggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+  if (save) localStorage.setItem('cyb_theme', theme);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+// ---------------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------------
 function boot() {
@@ -789,8 +812,15 @@ function boot() {
     btn.addEventListener('click', () => setFilter(btn.dataset.filter));
   });
 
+  // Theme toggle
+  const themeBtn = $('theme-toggle');
+  if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
   updateHeaderStats();
   initHome();
 }
+
+// Apply theme before first paint to avoid flash
+initTheme();
 
 document.addEventListener('DOMContentLoaded', boot);
